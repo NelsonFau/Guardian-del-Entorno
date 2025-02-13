@@ -1,0 +1,47 @@
+
+.row{
+    display: flex;
+    justify-content: center;
+}
+
+.card {
+    width: 18rem; /* Controla el ancho de las tarjetas */
+    margin: 10px; /* Espacio entre las tarjetas */
+    border: 1px solid #ccc; /* Borde de las tarjetas */
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil para las tarjetas */
+    transition: transform 0.3s ease; /* Efecto de transición para hover */
+}
+
+.card:hover {
+    transform: scale(1.05); /* Aumenta ligeramente el tamaño de la tarjeta */
+}
+
+.card-body {
+    padding: 15px;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.card-text {
+    font-size: 1rem;
+    color: #555;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
