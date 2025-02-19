@@ -5,9 +5,10 @@ import Footer from './componentes/folderFooter/footer.tsx';
 import Card from './componentes/folderCard/card.tsx'
 import Search from './componentes/folderSearch/search.tsx';
 
+
 function App() {
   return (
-    <body>
+    <div>
       <header>
         <Header head />
       </header>
@@ -18,7 +19,7 @@ function App() {
       <footer className='contenedorPadre'>
         <Footer />
       </footer>
-    </body>
+    </div>
     
   );
 } 

@@ -2,8 +2,7 @@ import React from "react";
 import './styleCard.css'
 import paisaje from '../../image/paisaje.jpg';
 
-function Card(props) {
-    const { card } = props;
+function Card() {
     return (
     <div className='row'>
         <div class="card col-12 col-md-4">
