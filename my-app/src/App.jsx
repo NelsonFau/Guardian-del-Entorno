@@ -6,7 +6,7 @@ import Search from './componentes/folderSearch/search.tsx';
 import { useSelector } from 'react-redux';
 import LoginUser from './componentes/FolderLoginUser/loginUser.jsx';
 import CreateNaturalArea from './componentes/folderNaturalArea/crearAreaNatural.jsx';
-import ListNaturalAreas from './componentes/folderNaturalArea/areasNaturales.jsx';
+import AreasNaturales from './componentes/folderNaturalArea/areasNaturales.jsx';
 
 const App = () => { 
   const user = useSelector((state) => state.user); // Obtener el usuario del estado de Redux
@@ -21,7 +21,7 @@ const App = () => {
       <main>
         <Search />
         <CreateNaturalArea />
-        <ListNaturalAreas/>
+        <AreasNaturales/>
       </main>
       <footer className='contenedorPadre'>
         <Footer />

@@ -14,15 +14,14 @@ const CreateNaturalArea = () => {
     imageUrl: "",
   });
 
-  const [loading, setLoading] = useState(false); // Estado para manejar la carga
-  const [message, setMessage] = useState(""); // Estado para mostrar mensajes
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
-  // Manejar cambios en los inputs
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Enviar datos a la API
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
