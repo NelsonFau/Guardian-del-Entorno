@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../estadoUser';
 
 
-
 const Header = () => {
     const user = useSelector((state)=> state.user)
     const dispatch = useDispatch();
@@ -19,8 +18,9 @@ const Header = () => {
                 {user ? (
                     < >    
                         <li className="row nav-item">
-                        <span className="nav-link text-white">Hola, {user.name}</span>
+                        <span className="nav-link text-black">{user.name}</span>
                         </li>
+                        
                         <li className="nav-item">
                         <button className="btn btn-danger" onClick={() => dispatch(logout())}>Cerrar sesión</button>
                         </li>

@@ -9,7 +9,7 @@
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    color: white;
+    color: rgb(252, 5, 5);
     font-weight: bold;
 }
 
@@ -21,3 +21,8 @@
     position: absolute;
     right: 20px;
 }
+
+.nav-item {
+    margin-bottom: 10px; /* Agrega espacio de 10px entre los items */
+}
+
