@@ -47,30 +47,30 @@ const LoginUser = () => {
     
 
     return (
-        <div className="container d-flex justify-content-center align-items-center vh-100">
-            <form onSubmit={handleLogin}>
-            <h2 className="text-center mb-3">Iniciar Sesión</h2>
+        <div className="containerLogin d-flex justify-content-center align-items-center vh-100">
+            <form className='formularioLogin' onSubmit={handleLogin}>
+            <h2 className="titleLogin text-center mb-3">Iniciar Sesión</h2>
                 <div className="mb-3">
-                    <label className="form-label">Correo Electrónico</label>
+                    <label className="formularioLogin-label">Usuario</label>
                     <input
                         type="email"
-                        className="form-control"
+                        className="formularioLogin-control"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
                     />
                 </div>
                 <div className="mb-3">
-                    <label className="form-label">Contraseña</label>
+                    <label className="formularioLogin-label">Contraseña</label>
                     <input
                         type="password"
-                        className="form-control"
+                        className="formularioLogin-control"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
                 </div>
-                <button type="submit" className="btn btn-primary w-100">Ingresar</button>
+                <button type="submit" className="formularioLogin-btn btn-primary w-100">Ingresar</button>
             </form>
         </div>
     );

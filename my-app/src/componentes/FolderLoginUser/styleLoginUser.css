@@ -1,5 +1,5 @@
 /* Contenedor principal */
-.container {
+.containerLogin {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -8,7 +8,7 @@
   }
   
   /* Título del formulario */
-  h2 {
+  .titleLogin {
     font-size: 2rem;
     font-weight: 600;
     color: #333;
@@ -16,7 +16,7 @@
   }
   
   /* Formulario centrado */
-  form {
+  .formularioLogin {
     background-color: white;
     border-radius: 10px;
     padding: 30px;
@@ -27,12 +27,12 @@
   }
   
   /* Efecto hover para la tarjeta del formulario */
-  form:hover {
+  .formularioLogin:hover {
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
   }
   
   /* Estilo de las etiquetas */
-  .form-label {
+  .formularioLogin-label {
     font-size: 14px;
     font-weight: 600;
     color: #333;
@@ -40,7 +40,7 @@
   }
   
   /* Estilo de los campos de entrada */
-  .form-control {
+  .formularioLogin-control {
     padding: 12px;
     font-size: 16px;
     border: 1px solid #ccc;
@@ -48,14 +48,14 @@
     transition: border-color 0.3s ease;
   }
   
-  .form-control:focus {
+  .formularioLogin-control:focus {
     border-color: #007bff;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
     outline: none;
   }
   
   /* Estilo del botón */
-  .btn {
+  .formularioLogin-btn {
     padding: 12px;
     font-size: 16px;
     background-color: #007bff;
@@ -66,11 +66,11 @@
     transition: background-color 0.3s ease;
   }
   
-  .btn:hover {
+  .formularioLogin-btn:hover {
     background-color: #0056b3;
   }
   
-  .btn:active {
+  .formularioLogin-btn:active {
     background-color: #00408d;
   }
   

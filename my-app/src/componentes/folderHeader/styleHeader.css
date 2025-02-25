@@ -1,0 +1,23 @@
+.stylenavbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.stylenavbar .user-name {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-weight: bold;
+}
+
+.nav-right {
+    margin-left: auto;
+}
+
+.logout-btn {
+    position: absolute;
+    right: 20px;
+}

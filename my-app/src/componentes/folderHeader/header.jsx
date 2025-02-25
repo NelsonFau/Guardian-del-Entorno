@@ -17,8 +17,8 @@ const Header = () => {
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 {user ? (
-                    <>
-                        <li className="nav-item">
+                    < >    
+                        <li className="row nav-item">
                         <span className="nav-link text-white">Hola, {user.name}</span>
                         </li>
                         <li className="nav-item">
