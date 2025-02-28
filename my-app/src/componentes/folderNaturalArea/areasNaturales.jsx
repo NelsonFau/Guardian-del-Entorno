@@ -21,6 +21,17 @@ const AreasNaturales = () => {
         description: "",
         imageUrl: ""
     });
+    const [showSpeciesModal, setShowSpeciesModal] = useState(false);
+    const [speciesForm, setSpeciesForm] = useState({
+    commonName: "",
+    scientificName: "",
+    category: "",
+    conservationStatus: "",
+    naturalAreaId: "", // Esto será el área natural seleccionada para la especie
+    });
+
+
+    
 
 
     const fetchAreas = async (pageNumber) => {
@@ -114,12 +125,11 @@ const AreasNaturales = () => {
         const url =
             "https://mammal-excited-tarpon.ngrok-free.app/api/natural-area/delete?secret=TallerReact2025!";
     
-        const requestBody = {
+        const consulta = {
             user: user?.id, 
             naturalAreaId: naturalAreaId, 
         };
     
-        console.log("Enviando petición DELETE con:", requestBody);
     
         try {
             const response = await fetch(url, {
@@ -127,21 +137,18 @@ const AreasNaturales = () => {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(requestBody),
+                body: JSON.stringify(consulta),
             });
     
             console.log("Respuesta completa:", response);
-    
-            if (!response.ok) {
-                throw new Error(`Error en la API: ${response.status}`);
-            }
+
     
             const data = await response.json();
             console.log("Respuesta JSON:", data);
     
             if (data.result === true) {
-                alert("Área eliminada correctamente");
                 setAreas((prevAreas) => prevAreas.filter(area => area.id !== naturalAreaId));
+                alert("Área eliminada correctamente");
             } else {
                 alert("Error al eliminar el área: La API no devolvió un resultado exitoso.");
             }
@@ -176,6 +183,74 @@ const AreasNaturales = () => {
             imageUrl: area.imageUrl
         });
     };
+    
+
+    const handleOpenAddSpeciesModal = (naturalAreaId) => {
+        setSpeciesForm({ ...speciesForm, naturalAreaId: naturalAreaId });
+        setShowSpeciesModal(true);
+    };
+    
+    const handleAgregarEspecie = async (formData) => {
+        setLoading(true);
+    
+        const dataToSend = {
+            userId: user?.id,
+            species: {
+              commonName: formData.commonName,
+              scientificName: formData.scientificName,
+              category: formData.category,
+              conservationStatus: formData.conservationStatus,
+              naturalAreaId: formData.naturalAreaId, 
+            },
+        };
+          
+          console.log("Datos a enviar:", JSON.stringify(dataToSend));
+          
+          // Aquí va tu código para enviar los datos (por ejemplo, con fetch)
+          
+        
+        console.log("Datos a enviar:",(formData.naturalAreaId));
+
+
+        console.log("🚀 Enviando datos a la API:", dataToSend);
+    
+        try {
+            const response = await fetch("https://mammal-excited-tarpon.ngrok-free.app/api/species/insert?secret=TallerReact2025!", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(dataToSend),
+            });
+    
+            if (!response.ok) {
+                const errorDetails = await response.text();  // Captura el cuerpo de la respuesta
+                console.error("Error de la API:", errorDetails);  // Imprime detalles del error
+                throw new Error(`Error en la API: ${response.status}`);
+            }
+    
+            const result = await response.json();
+            console.log("Resultado:", result);
+    
+            if (result.result) {
+                setSpeciesForm({
+                    commonName: "",
+                    scientificName: "",
+                    category: "",
+                    conservationStatus: "",
+                    naturalAreaId: "",
+                });
+                setShowSpeciesModal(false);  // Cierra la modal al agregar la especie
+            } else {
+                console.log("❌ Error al crear la especie.");
+            }
+        } catch (error) {
+            console.error("Error en la solicitud:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+    
     
 
 
@@ -221,6 +296,13 @@ const AreasNaturales = () => {
                                         >
                                             Editar
                                         </button>
+                                        <button 
+                                            className="btn btn-primary btn-sm mt-2"
+                                            onClick={() => handleOpenAddSpeciesModal(area.id)}
+                                        >
+                                            Agregar Especie
+                                        </button>
+
 
                                     </div>
                                 </div>
@@ -254,6 +336,53 @@ const AreasNaturales = () => {
                         </div>
                     )}
 
+                    {showSpeciesModal && (
+                        <div className="modal fade show d-block" tabIndex="-1" role="dialog">
+                            <div className="modal-dialog">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h5 className="modal-title">Agregar Especie</h5>
+                                        <button type="button" className="close" onClick={() => setShowSpeciesModal(false)}>×</button>
+                                    </div>
+                                    <div className="modal-body">
+                                        <input
+                                            type="text"
+                                            className="form-control mb-2"
+                                            placeholder="Nombre Común"
+                                            value={speciesForm.commonName}
+                                            onChange={(e) => setSpeciesForm({ ...speciesForm, commonName: e.target.value })}
+                                        />
+                                        <input
+                                            type="text"
+                                            className="form-control mb-2"
+                                            placeholder="Nombre Científico"
+                                            value={speciesForm.scientificName}
+                                            onChange={(e) => setSpeciesForm({ ...speciesForm, scientificName: e.target.value })}
+                                        />
+                                        <input
+                                            type="text"
+                                            className="form-control mb-2"
+                                            placeholder="Categoría"
+                                            value={speciesForm.category}
+                                            onChange={(e) => setSpeciesForm({ ...speciesForm, category: e.target.value })}
+                                        />
+                                        <input
+                                            type="text"
+                                            className="form-control mb-2"
+                                            placeholder="Estado de Conservación"
+                                            value={speciesForm.conservationStatus}
+                                            onChange={(e) => setSpeciesForm({ ...speciesForm, conservationStatus: e.target.value })}
+                                        />
+                                        <p>Área seleccionada: {areas.find(area => area.id === speciesForm.naturalAreaId)?.name}</p>
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button className="btn btn-secondary" onClick={() => setShowSpeciesModal(false)}>Cancelar</button>
+                                        <button className="btn btn-success" onClick={() => handleAgregarEspecie(speciesForm)}>Agregar Especie</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
 
 
                     {areas.length < totalRecords && (
