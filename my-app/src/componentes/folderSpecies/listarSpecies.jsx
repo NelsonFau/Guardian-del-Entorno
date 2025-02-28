@@ -10,7 +10,15 @@ const Species = () => {
     const [page, setPage] = useState(1);
     const [totalRecords, setTotalRecords] = useState(0);
     const pageSize = 10;
-
+    const [selectedSpecies, setSelectedSpecies] = useState(null); 
+    const [editForm, setEditForm] = useState({
+        id:"",
+        commonName: "",
+        scientificName: "",
+        category: "",
+        conservationStatus: "",
+        naturalAreaId: "", 
+    });
 
     const fetchSpecies = async (pageNumber) => {
         setLoading(true);
@@ -112,6 +120,66 @@ const Species = () => {
         fetchSpecies(nextPage);
     };
 
+    const handleUpdate = async () => {
+        const url = "https://mammal-excited-tarpon.ngrok-free.app/api/species/update?secret=TallerReact2025!";
+    
+        const requestBody = {
+            userId: user?.id,  // Asegúrate de que este campo sea el ID correcto del usuario
+            Species: { 
+                ...editForm  // Asegúrate de que todos los campos del formulario estén presentes
+            }
+        };
+        
+    
+        console.log("Enviando datos para actualizar:", requestBody); // Verifica los datos enviados
+    
+        try {
+            const response = await fetch(url, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(requestBody),
+            });
+    
+            if (!response.ok) {
+                throw new Error(`Error en la API: ${response.status}`);
+            }
+    
+            const data = await response.json();
+            console.log("Respuesta de la API:", data); 
+    
+            if (data.result === true) {
+                alert("Área actualizada correctamente");
+    
+                setSpecies((prevAreas) =>
+                    prevAreas.map(species =>
+                        species.id === editForm.id ? { ...editForm } : species
+                    )
+                );
+    
+                setSelectedSpecies(null);
+            } else {
+                alert("Error al actualizar el área. La API devolvió un resultado inesperado.");
+            }
+        } catch (error) {
+            console.error("Error en la actualización:", error);
+            alert("Ocurrió un error al actualizar el área.");
+        }
+    };
+
+    const handleEdit = (species) => {
+        setSelectedSpecies(species);
+        setEditForm({
+            id: species.id,
+            commonName: species.commonName,
+            scientificName: species.scientificName,
+            category: species.category,
+            conservationStatus: species.conservationStatus,
+            naturalAreaId: species.naturalAreaId, 
+        });
+    };
+
     return (
         <div className="container mt-4">
             <div className="card shadow-lg">
@@ -133,6 +201,12 @@ const Species = () => {
                                         <p><strong>Estado de conservación:</strong> {species.conservationStatus}</p>
                                         <p><strong>Area Natural:</strong> {species.naturalAreaId}</p>
                                         <button 
+                                            className="btn btn-primary btn-sm mt-2"
+                                            onClick={() => handleEdit(species)}
+                                        >
+                                            Editar
+                                        </button>
+                                        <button 
                                             className="btn btn-danger mt-3 w-100"
                                             onClick={() => DeleteCard(species.id)}
                                             >
@@ -146,8 +220,29 @@ const Species = () => {
 
                     </div>
 
-                    
-            
+                    {selectedSpecies && (
+                        <div className="modal fade show d-block" tabIndex="-1" role="dialog">
+                            <div className="modal-dialog">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h5 className="modal-title">Editar Área Natural</h5>
+                                        <button type="button" className="close" onClick={() => setSelectedSpecies(null)}>×</button>
+                                    </div>
+                                    <div className="modal-body">
+                                        <input type="text" className="form-control mb-2" placeholder="Nombre" value={editForm.commonName} onChange={(e) => setEditForm({ ...editForm, commonName: e.target.value })} />
+                                        <input type="text" className="form-control mb-2" placeholder="Nombre Cientifico" value={editForm.scientificName} onChange={(e) => setEditForm({ ...editForm, scientificName: e.target.value })} />
+                                        <input type="text" className="form-control mb-2" placeholder="Categoria" value={editForm.category} onChange={(e) => setEditForm({ ...editForm, category: e.target.value })} />
+                                        <input type="text" className="form-control mb-2" placeholder="Estado de Conservación" value={editForm.conservationStatus} onChange={(e) => setEditForm({ ...editForm, conservationStatus: e.target.value })} />
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button className="btn btn-secondary" onClick={() => setSelectedSpecies(null)}>Cancelar</button>
+                                        <button className="btn btn-success" onClick={handleUpdate}>Guardar cambios</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                        
 
 
 
