@@ -2,11 +2,15 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux'; // Para usar dispatch
 import { setUser } from '../../estadoUser';
 import './styleLoginUser.css'
+import { useNavigate } from 'react-router-dom'; // Importamos useNavigate para redirigir
 
 
 const LoginUser = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('');
+
+    const navigate = useNavigate(); // Creamos el hook navigate
+
 
     const dispatch = useDispatch();
 
@@ -45,6 +49,10 @@ const LoginUser = () => {
         }
     }
     
+    const handleCreateAccount = () => {
+        // Redirige a la página para crear una nueva cuenta
+        navigate('/crear-usuario'); // Cambia '/crear-usuario' por la ruta de tu página de registro
+    };
 
     return (
         <div className="containerLogin d-flex justify-content-center align-items-center vh-100">
@@ -70,7 +78,12 @@ const LoginUser = () => {
                         required
                     />
                 </div>
-                <button type="submit" className="formularioLogin-btn btn-primary w-100">Ingresar</button>
+                <button type="submit" className="formularioLogin-btn btn-primary w-100">
+                    Ingresar
+                </button>
+                <button onClick={handleCreateAccount} className="formularioLogin-btn btn-secondary w-100 mt-3">
+                Crear Usuario
+                </button>
             </form>
         </div>
     );

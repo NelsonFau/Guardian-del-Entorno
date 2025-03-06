@@ -1,28 +1,5 @@
-.stylenavbar {
+
+.loginStyle{
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
+    justify-content: center;
 }
-
-.stylenavbar .user-name {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    color: rgb(252, 5, 5);
-    font-weight: bold;
-}
-
-.nav-right {
-    margin-left: auto;
-}
-
-.logout-btn {
-    position: absolute;
-    right: 20px;
-}
-
-.nav-item {
-    margin-bottom: 10px; /* Agrega espacio de 10px entre los items */
-}
-

@@ -10,7 +10,8 @@ const AreasNaturales = () => {
     const [page, setPage] = useState(1);
     const [totalRecords, setTotalRecords] = useState(0);
     const pageSize = 10;
-    const [selectedArea, setSelectedArea] = useState(null); 
+    const [selectedArea, setSelectedArea] = useState(); 
+    const [message, setMessage] = useState("");  // Estado para el mensaje
     const [editForm, setEditForm] = useState({
         id: "",
         name: "",
@@ -29,8 +30,21 @@ const AreasNaturales = () => {
     conservationStatus: "",
     naturalAreaId: "", // Esto será el área natural seleccionada para la especie
     });
-
-
+    const [mostrarActividadesModal, setMostrarActividadesModal] = useState(false);
+    const [actividadForm, setActividadForm] = useState({
+        userId: "",
+        naturalAreaId: "",
+        description: "",
+        date: ""
+    });
+    
+    const [mostrarComentarioModal, setMostrarComentarioModal]=useState(false);
+    const [comentarioForm,setComentarioForm] = useState({
+        userId:"",
+        naturalAreaId:"",
+        description:"",
+        date:""
+    })
     
 
 
@@ -38,7 +52,7 @@ const AreasNaturales = () => {
         setLoading(true);
         try {
             const response = await fetch(
-                `https://mammal-excited-tarpon.ngrok-free.app/api/natural-area/list?secret=TallerReact2025!&userId=${user?.id}&keyword=&areaType=&region=&conservationStatus=&page=${pageNumber}&pageSize=${pageSize}`,
+                `https://mammal-excited-tarpon.ngrok-free.app/api/natural-area/list?=TallerReact2025!&userId=${user?.id}&keyword=&areaType=&region=&conservationStatus=&page=${pageNumber}&pageSize=${pageSize}`,
                 {
                     method: 'GET',
                     headers: {
@@ -190,6 +204,7 @@ const AreasNaturales = () => {
         setShowSpeciesModal(true);
     };
     
+
     const handleAgregarEspecie = async (formData) => {
         setLoading(true);
     
@@ -251,7 +266,124 @@ const AreasNaturales = () => {
         }
     };
     
+   
+    const handleOpenAddActividadModal = (naturalAreaId) => {
+        setActividadForm({ ...actividadForm, naturalAreaId: naturalAreaId });
+        setMostrarActividadesModal(true);
+    };
     
+    const handleAgregarActividad = async (formData) => {
+        setLoading(true);
+    
+        const dataToSend = {
+            conservationActivity: {
+              userId:user?.id,
+              naturalAreaId: formData.naturalAreaId,
+              description: formData.description,
+              date: formData.date, 
+            },
+        };
+          console.log(user)
+          console.log("Datos a enviar:", JSON.stringify(dataToSend));
+
+        console.log("Datos a enviar:",(formData.naturalAreaId));
+
+
+        console.log("🚀 Enviando datos a la API:", dataToSend);
+    
+        try {
+            const response = await fetch("https://mammal-excited-tarpon.ngrok-free.app/api/conservation-activity/insert?secret=TallerReact2025!", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(dataToSend),
+            });
+    
+            
+            const result = await response.json();
+            console.log("Resultado:", result);
+    
+            if (result.result) {
+                setMessage("✅ Actividad agregada correctamente.");
+                setActividadForm({
+                    userId: "",
+                    naturalAreaId: "",
+                    description: "",
+                    date: "",
+                });
+                setMostrarActividadesModal(false);  // Cierra la modal al agregar la especie
+            } else {
+                console.log("❌ Error al crear la especie.");
+            }
+        } catch (error) {
+            console.error("Error en la solicitud:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleOpenAddComentarioModal = (naturalAreaId) => {
+        setComentarioForm({ ...comentarioForm, naturalAreaId: naturalAreaId });
+        setMostrarComentarioModal(true);
+    };
+    
+    const handleAgregarComentario = async (formData) => {
+        setLoading(true);
+    
+        const dataToSend = {
+            comment: {
+              userId:user?.id,
+              naturalAreaId: formData.naturalAreaId,
+              specie: null,
+              comment: formData.comment,
+              rating: formData.rating
+            },
+        };
+          console.log(user)
+          console.log("Datos a enviar:", JSON.stringify(dataToSend));
+
+        console.log("Datos a enviar:",(formData.naturalAreaId));
+
+
+        console.log("🚀 Enviando datos a la API:", dataToSend);
+    
+        try {
+            const response = await fetch("https://mammal-excited-tarpon.ngrok-free.app/api/comment/insert?secret=TallerReact2025!", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(dataToSend),
+            });
+    
+            if (!response.ok) {
+                const errorDetails = await response.text();  // Captura el cuerpo de la respuesta
+                console.error("Error de la API:", errorDetails);  // Imprime detalles del error
+                throw new Error(`Error en la API: ${response.status}`);
+            }
+    
+            const result = await response.json();
+            console.log("Resultado:", result);
+    
+            if (result.result) {
+                setComentarioForm({
+                    userId: user?.id,
+                    naturalAreaId: "",
+                    specie: null,
+                    comment: "",
+                    rating: ""
+                });
+                setMostrarComentarioModal(false);  // Cierra la modal al agregar la especie
+            } else {
+                console.log("❌ Error al crear la especie.");
+            }
+        } catch (error) {
+            console.error("Error en la solicitud:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
 
 
@@ -283,7 +415,7 @@ const AreasNaturales = () => {
                                                 style={{ maxWidth: "100%", height: "auto" }}
                                             />
                                         )}
-                                        {/* Botón Eliminar */}
+
                                         <button 
                                             className="btn btn-danger mt-3 w-100"
                                             onClick={() => handleDelete(area.id)}
@@ -302,14 +434,29 @@ const AreasNaturales = () => {
                                         >
                                             Agregar Especie
                                         </button>
+                                        <button className="btn btn-primary btn-sm mt-2"
+                                            onClick={() => handleOpenAddActividadModal(area.id)}
+                                        >
+                                            Agregar Actividad
+                                        </button>
+                                        <button className="btn btn-primary btn-sm mt-2"
+                                            onClick={() => handleOpenAddComentarioModal(area.id)}
+                                        >
+                                            Agregar comentario
+                                        </button>
+
+
 
 
                                     </div>
                                 </div>
+                               
+
                             </div>
                         ))}
-                    </div>
-            
+                        
+                    </div>     
+
                     {selectedArea && (
                         <div className="modal fade show d-block" tabIndex="-1" role="dialog">
                             <div className="modal-dialog">
@@ -384,6 +531,82 @@ const AreasNaturales = () => {
                         </div>
                     )}
 
+                    {mostrarActividadesModal && (
+                        <div className="modal fade show d-block" tabIndex="-1" role="dialog">
+                            <div className="modal-dialog">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h5 className="modal-title">Agregar Actividad de Conservacion</h5>
+                                        <button type="button" className="close" onClick={() => setMostrarActividadesModal(false)}>×</button>
+                                    </div>
+                                    <div className="modal-body">
+                                        <input
+                                            type="textarea"
+                                            className="form-control mb-2"
+                                            placeholder="Descripcion"
+                                            value={actividadForm.description}
+                                            onChange={(e) => setActividadForm({ ...actividadForm, description: e.target.value })}
+                                        />
+                                        <input
+                                            type="date"
+                                            className="form-control mb-2"
+                                            placeholder="Fecha"
+                                            value={actividadForm.date}
+                                            onChange={(e) => setActividadForm({ ...actividadForm, date: e.target.value })}
+                                        />
+                                        <p>Área seleccionada: {areas.find(area => area.id === actividadForm.naturalAreaId)?.name}</p>
+                                        
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button className="btn btn-secondary" onClick={() => setMostrarActividadesModal(false)}>Cancelar</button>
+                                        <button className="btn btn-success" onClick={() => handleAgregarActividad(actividadForm)}>Agregar Actividad </button>
+                                    </div>
+                                </div>
+                                {message && <p style={{ color: "green" }}>{message}</p>}
+                            </div>
+                        </div>
+                    )}
+
+                    {mostrarComentarioModal && (
+                        <div className="modal fade show d-block" tabIndex="-1" role="dialog">
+                            <div className="modal-dialog">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h5 className="modal-title">Agregar Comentario</h5>
+                                        <button type="button" className="close" onClick={() => setMostrarComentarioModal(false)}>×</button>
+                                    </div>
+                                    <div className="modal-body">
+                                        <input
+                                            type="textarea"
+                                            className="form-control mb-2"
+                                            placeholder="Comentario"
+                                            value={comentarioForm.comment}
+                                            onChange={(e) => setComentarioForm({ ...comentarioForm, comment: e.target.value })}
+                                        />
+                                        <select 
+                                            name="rating" 
+                                            id="rating" 
+                                            className="form-control mb-2"
+                                            value={comentarioForm.rating}
+                                            onChange={(e) => setComentarioForm({ ...comentarioForm, rating: e.target.value })}
+                                        >
+                                            <option value="">Selecciona una calificación</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                                        <p>Área seleccionada: {areas.find(area => area.id === comentarioForm.naturalAreaId)?.name}</p>
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button className="btn btn-secondary" onClick={() => setMostrarComentarioModal(false)}>Cancelar</button>
+                                        <button className="btn btn-success" onClick={() => handleAgregarComentario(comentarioForm)}>Agregar Comentario </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
 
                     {areas.length < totalRecords && (
                         <button 

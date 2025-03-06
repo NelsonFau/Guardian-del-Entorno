@@ -196,7 +196,7 @@ const Species = () => {
                                     <div className="card-body">
                                         <h5 className="mb-1">{species.commonName}</h5>
                                         <p className="text-muted">{species.scientificName}</p>
-                                        <p><strong>id:</strong> {species.userid}</p>
+                                        <p><strong>id:</strong> {species.id}</p>
                                         <p><strong>Categoría:</strong> {species.category}</p>
                                         <p><strong>Estado de conservación:</strong> {species.conservationStatus}</p>
                                         <p><strong>Area Natural:</strong> {species.naturalAreaId}</p>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../estadoUser';
+import './styleHeader.css'
 
 
 const Header = () => {
@@ -16,14 +17,16 @@ const Header = () => {
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 {user ? (
-                    < >    
-                        <li className="row nav-item">
-                        <span className="nav-link text-black">{user.name}</span>
+                    <>   
+                    <div className='loginStyle'>
+                        <li className="nav-item m-6">
+                            <button className="nav-link text-black">{user.name}</button>
                         </li>
                         
-                        <li className="nav-item">
+                        <li className="nav-item m-6">
                         <button className="btn btn-danger" onClick={() => dispatch(logout())}>Cerrar sesión</button>
                         </li>
+                    </div>   
                     </>
                     ) : (
                     <li className="nav-item">

@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import Header from './componentes/folderHeader/header';
 import Footer from './componentes/folderFooter/footer.tsx';
-import Search from './componentes/folderSearch/search.tsx';
 import { useSelector } from 'react-redux';
 import LoginUser from './componentes/FolderLoginUser/loginUser.jsx';
 import CreateNaturalArea from './componentes/folderNaturalArea/crearAreaNatural.jsx';
 import AreasNaturales from './componentes/folderNaturalArea/areasNaturales.jsx';
 import Species from './componentes/folderSpecies/listarSpecies.jsx';
-
+import DetailsUser from './componentes/FolderLoginUser/loginDetail.jsx';
+import LoginCreate from './componentes/folderCreateLogin/loginCreate.jsx';
+  
+  
 const Home = () => {
   const user = useSelector((state) => state.user);
   const navigate = useNavigate(); 
@@ -21,12 +23,12 @@ const Home = () => {
         {user ? <p>Bienvenido, {user?.name}!</p> : <LoginUser />}
       </header>
       <main>
-        <Search />
         
         <button onClick={() => navigate('/crear-area')} className="btn btn-primary m-2">
           Crear Nueva Área Natural
         </button>
-
+        
+        <DetailsUser/>
 
         <button 
           onClick={() => setMostrarEspecies(!mostrarEspecies)} 
@@ -51,6 +53,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/crear-area" element={<CreateNaturalArea />} />
+        <Route path="/crear-usuario" element={<LoginCreate />} />
       </Routes>
     </Router>
   );
