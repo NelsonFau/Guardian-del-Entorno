@@ -130,7 +130,7 @@ const DetailsUser = () => {
             fetchSpecies();
             fetchActividades();
         }
-    }, [user, page]);  // Se ejecuta solo cuando `user` cambia
+    }, [user, page]); 
     
 
     return (

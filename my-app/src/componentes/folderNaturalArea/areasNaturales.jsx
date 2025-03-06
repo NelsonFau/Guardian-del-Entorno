@@ -11,7 +11,7 @@ const AreasNaturales = () => {
     const [totalRecords, setTotalRecords] = useState(0);
     const pageSize = 10;
     const [selectedArea, setSelectedArea] = useState(); 
-    const [message, setMessage] = useState("");  // Estado para el mensaje
+    const [message, setMessage] = useState("");  
     const [editForm, setEditForm] = useState({
         id: "",
         name: "",
@@ -36,15 +36,17 @@ const AreasNaturales = () => {
         naturalAreaId: "",
         description: "",
         date: ""
-    });
-    
+    }); 
     const [mostrarComentarioModal, setMostrarComentarioModal]=useState(false);
     const [comentarioForm,setComentarioForm] = useState({
         userId:"",
-        naturalAreaId:"",
-        description:"",
-        date:""
+        naturalAreaId: "",
+        specie: null,
+        comment: "",
+        rating: ""
     })
+    const [selectedNaturalAreaId, setSelectedNaturalAreaId] = useState(null);
+
     
 
 
@@ -90,14 +92,14 @@ const AreasNaturales = () => {
         const url = "https://mammal-excited-tarpon.ngrok-free.app/api/natural-area/update?secret=TallerReact2025!";
     
         const requestBody = {
-            userId: user?.id,  // Asegúrate de que este campo sea el ID correcto del usuario
+            userId: user?.id,  
             naturalArea: { 
-                ...editForm  // Asegúrate de que todos los campos del formulario estén presentes
+                ...editForm  
             }
         };
         
     
-        console.log("Enviando datos para actualizar:", requestBody); // Verifica los datos enviados
+        console.log("Enviando datos para actualizar:", requestBody); 
     
         try {
             const response = await fetch(url, {
@@ -172,9 +174,7 @@ const AreasNaturales = () => {
         }
     };
 
-    useEffect(() => {
-        fetchAreas(page);
-    }, []);
+    
 
     const handleLoadMore = () => {
         if (areas.length >= totalRecords) return;
@@ -221,7 +221,6 @@ const AreasNaturales = () => {
           
           console.log("Datos a enviar:", JSON.stringify(dataToSend));
           
-          // Aquí va tu código para enviar los datos (por ejemplo, con fetch)
           
         
         console.log("Datos a enviar:",(formData.naturalAreaId));
@@ -239,8 +238,8 @@ const AreasNaturales = () => {
             });
     
             if (!response.ok) {
-                const errorDetails = await response.text();  // Captura el cuerpo de la respuesta
-                console.error("Error de la API:", errorDetails);  // Imprime detalles del error
+                const errorDetails = await response.text();  
+                console.error("Error de la API:", errorDetails); 
                 throw new Error(`Error en la API: ${response.status}`);
             }
     
@@ -255,7 +254,7 @@ const AreasNaturales = () => {
                     conservationStatus: "",
                     naturalAreaId: "",
                 });
-                setShowSpeciesModal(false);  // Cierra la modal al agregar la especie
+                setShowSpeciesModal(false);  
             } else {
                 console.log("❌ Error al crear la especie.");
             }
@@ -312,7 +311,7 @@ const AreasNaturales = () => {
                     description: "",
                     date: "",
                 });
-                setMostrarActividadesModal(false);  // Cierra la modal al agregar la especie
+                setMostrarActividadesModal(false); 
             } else {
                 console.log("❌ Error al crear la especie.");
             }
@@ -323,10 +322,7 @@ const AreasNaturales = () => {
         }
     };
 
-    const handleOpenAddComentarioModal = (naturalAreaId) => {
-        setComentarioForm({ ...comentarioForm, naturalAreaId: naturalAreaId });
-        setMostrarComentarioModal(true);
-    };
+    
     
     const handleAgregarComentario = async (formData) => {
         setLoading(true);
@@ -346,7 +342,7 @@ const AreasNaturales = () => {
         console.log("Datos a enviar:",(formData.naturalAreaId));
 
 
-        console.log("🚀 Enviando datos a la API:", dataToSend);
+        console.log("🚀 Enviando datos a la comment:", dataToSend);
     
         try {
             const response = await fetch("https://mammal-excited-tarpon.ngrok-free.app/api/comment/insert?secret=TallerReact2025!", {
@@ -358,8 +354,8 @@ const AreasNaturales = () => {
             });
     
             if (!response.ok) {
-                const errorDetails = await response.text();  // Captura el cuerpo de la respuesta
-                console.error("Error de la API:", errorDetails);  // Imprime detalles del error
+                const errorDetails = await response.text();  
+                console.error("Error de la API:", errorDetails);  
                 throw new Error(`Error en la API: ${response.status}`);
             }
     
@@ -374,7 +370,7 @@ const AreasNaturales = () => {
                     comment: "",
                     rating: ""
                 });
-                setMostrarComentarioModal(false);  // Cierra la modal al agregar la especie
+                setMostrarComentarioModal(false);
             } else {
                 console.log("❌ Error al crear la especie.");
             }
@@ -386,6 +382,54 @@ const AreasNaturales = () => {
     };
 
 
+    const fetchComents = async (pageNumber) => {
+        if (!selectedNaturalAreaId) return; 
+        setLoading(true);
+        try {
+            const response = await fetch(
+                `https://mammal-excited-tarpon.ngrok-free.app/api/comment/byEntityId?secret=TallerReact2025!&userId=${user?.id}&naturalAreaId=${selectedNaturalAreaId}&page=${pageNumber}&pageSize=${pageSize}`,
+                {
+                    method: 'GET',
+                    headers: {
+                        'Content-type': "application/json",
+                        "ngrok-skip-browser-warning": "true",
+                    }
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error(`Error en la API: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+
+            if (data.items) {
+                setAreas((prevComents) => {
+                    const updatedComents = [...prevComents, ...data.items];
+                    const uniqueComents = Array.from(new Map(updatedComents.map(area => [area.id, area])).values());
+                    return uniqueComents;
+                });
+            } else {
+                setError("No se encontraron comentarios.");
+            }
+        } catch (error) {
+            console.error("Error al obtener áreas naturales:", error);
+            setError("Error al obtener las áreas naturales. Inténtalo más tarde.");
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    const handleOpenAddComentarioModal = (naturalAreaId) => {
+        setComentarioForm({ ...comentarioForm, naturalAreaId: naturalAreaId });
+        setMostrarComentarioModal(true);
+        fetchComents(page);
+    };
+
+    useEffect(() => {
+        fetchAreas(page);
+    }, []);
 
     return (
         <div className="container mt-4">
@@ -439,8 +483,12 @@ const AreasNaturales = () => {
                                         >
                                             Agregar Actividad
                                         </button>
-                                        <button className="btn btn-primary btn-sm mt-2"
-                                            onClick={() => handleOpenAddComentarioModal(area.id)}
+                                        <button 
+                                            className="btn btn-primary btn-sm mt-2"
+                                            onClick={() => {
+                                                setSelectedNaturalAreaId(area.id); 
+                                                handleOpenAddComentarioModal(area.id);
+                                            }}
                                         >
                                             Agregar comentario
                                         </button>
@@ -572,14 +620,27 @@ const AreasNaturales = () => {
                             <div className="modal-dialog">
                                 <div className="modal-content">
                                     <div className="modal-header">
-                                        <h5 className="modal-title">Agregar Comentario</h5>
+                                        <h5 className="modal-title">Comentarios</h5>
                                         <button type="button" className="close" onClick={() => setMostrarComentarioModal(false)}>×</button>
                                     </div>
                                     <div className="modal-body">
-                                        <input
-                                            type="textarea"
+                                        {loading && <p className="text-center">Cargando comentarios...</p>}
+                                        {error && <div className="alert alert-danger">{error}</div>}
+                                        
+                                     
+                                        <div className="comentarios-list">
+                                            {areas.map((comentario, index) => (
+                                                <div key={index} className="card mb-2 p-2">
+                                                    <p><strong>{comentario.userName}</strong>: {comentario.comment}</p>
+                                                    <p>⭐ {comentario.rating} / 5</p>
+                                                </div>
+                                            ))}
+                                        </div>
+
+
+                                        <textarea
                                             className="form-control mb-2"
-                                            placeholder="Comentario"
+                                            placeholder="Escribe tu comentario..."
                                             value={comentarioForm.comment}
                                             onChange={(e) => setComentarioForm({ ...comentarioForm, comment: e.target.value })}
                                         />
@@ -591,22 +652,24 @@ const AreasNaturales = () => {
                                             onChange={(e) => setComentarioForm({ ...comentarioForm, rating: e.target.value })}
                                         >
                                             <option value="">Selecciona una calificación</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
+                                            <option value="1">1 ⭐</option>
+                                            <option value="2">2 ⭐</option>
+                                            <option value="3">3 ⭐</option>
+                                            <option value="4">4 ⭐</option>
+                                            <option value="5">5 ⭐</option>
                                         </select>
+                                        
                                         <p>Área seleccionada: {areas.find(area => area.id === comentarioForm.naturalAreaId)?.name}</p>
                                     </div>
                                     <div className="modal-footer">
                                         <button className="btn btn-secondary" onClick={() => setMostrarComentarioModal(false)}>Cancelar</button>
-                                        <button className="btn btn-success" onClick={() => handleAgregarComentario(comentarioForm)}>Agregar Comentario </button>
+                                        <button className="btn btn-success" onClick={() => handleAgregarComentario(comentarioForm)}>Agregar Comentario</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     )}
+
 
                     {areas.length < totalRecords && (
                         <button 

@@ -14,7 +14,7 @@ import LoginCreate from './componentes/folderCreateLogin/loginCreate.jsx';
 const Home = () => {
   const user = useSelector((state) => state.user);
   const navigate = useNavigate(); 
-  const [mostrarEspecies, setMostrarEspecies] = useState(true); // Estado para alternar vistas
+  const [mostrarEspecies, setMostrarEspecies] = useState(true); 
 
   return (
     <>
@@ -37,7 +37,6 @@ const Home = () => {
           {mostrarEspecies ? "Ver Áreas Naturales" : "Ver Especies"}
         </button>
 
-        {/* Renderizado condicional de Especies o Áreas Naturales */}
         {mostrarEspecies ? <Species /> : <AreasNaturales />}
       </main>
       <footer className="contenedorPadre">

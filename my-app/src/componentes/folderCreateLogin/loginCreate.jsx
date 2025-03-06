@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './styleCreateLogin.css'
-import { useNavigate } from 'react-router-dom'; // Importa useNavigate
+import { useNavigate } from 'react-router-dom'; 
 
 
 function LoginCreate() {
@@ -8,7 +8,7 @@ function LoginCreate() {
     const [email, setEmail] = useState('');
     const [contrasenia, setConstrasenia] = useState('');
     const [error, setError] = useState('');
-    const navigate = useNavigate(); // Usamos el hook useNavigate
+    const navigate = useNavigate(); 
 
 
     const ButtonSubmit = async (e) => {
@@ -38,15 +38,15 @@ function LoginCreate() {
                 body: JSON.stringify(loginData)
             });
             
-            const response = await datosServer.json(); // Si el servidor responde con JSON
+            const response = await datosServer.json(); 
             console.log('Respuesta del servidor:', response);
 
 
-            console.log('Respuesta del servidor:', datosServer); // Para ver la respuesta completa
+            console.log('Respuesta del servidor:', datosServer); 
             if (datosServer.ok) {
                 setError('Agregado correctamente');
                 console.log('Registro exitoso');
-                navigate('/'); // Redirige a la página principal
+                navigate('/');
             } else {
                 setError('Hubo un error al registrarse. Intenta nuevamente.');
                 console.log('Hubo un error al registrarse. Intenta nuevamente.');

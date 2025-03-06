@@ -1,23 +1,21 @@
-/* Aseguramos que el contenedor ocupe toda la pantalla */
+
 .createLogin {
-    display: flex;              /* Usamos flexbox */
-    justify-content: center;    /* Centrado horizontal */
-    align-items: center;        /* Centrado vertical */
-    min-height: 100vh;           /* Asegura que ocupe toda la altura de la ventana */
-    background-color: #f8f9fa;  /* Fondo claro */
+    display: flex;              
+    justify-content: center;    
+    align-items: center;        
+    min-height: 100vh;          
+    background-color: #f8f9fa;  
 }
 
-/* Estilos del formulario */
 .formCreatelogin {
-    max-width: 400px;  /* Máximo ancho de 400px */
-    width: 100%;       /* 100% del ancho del contenedor */
+    max-width: 400px;  
+    width: 100%;     
     padding: 20px;
     background-color: #fff;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
-/* Estilos de los campos de entrada */
 .form-group {
     margin-bottom: 15px;
 }
@@ -42,7 +40,6 @@
     outline: none;
 }
 
-/* Estilo del botón de envío */
 button {
     width: 100%;
     padding: 12px;
@@ -58,7 +55,6 @@ button {
     background-color: #0056b3;
 }
 
-/* Mensajes de error o éxito */
 .message {
     text-align: center;
     font-size: 14px;

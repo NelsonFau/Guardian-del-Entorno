@@ -1,4 +1,3 @@
-/* Contenedor principal */
 .containerLogin {
     display: flex;
     justify-content: center;
@@ -7,7 +6,6 @@
     background-color: #f2f2f2;
   }
   
-  /* Título del formulario */
   .titleLogin {
     font-size: 2rem;
     font-weight: 600;
@@ -15,7 +13,6 @@
     margin-bottom: 20px;
   }
   
-  /* Formulario centrado */
   .formularioLogin {
     background-color: white;
     border-radius: 10px;
@@ -26,12 +23,10 @@
     transition: all 0.3s ease;
   }
   
-  /* Efecto hover para la tarjeta del formulario */
   .formularioLogin:hover {
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
   }
   
-  /* Estilo de las etiquetas */
   .formularioLogin-label {
     font-size: 14px;
     font-weight: 600;
@@ -39,7 +34,6 @@
     margin-bottom: 5px;
   }
   
-  /* Estilo de los campos de entrada */
   .formularioLogin-control {
     padding: 12px;
     font-size: 16px;
@@ -54,7 +48,6 @@
     outline: none;
   }
   
-  /* Estilo del botón */
   .formularioLogin-btn {
     padding: 12px;
     font-size: 16px;

@@ -10,7 +10,7 @@ import { GoogleMap, LoadScript, Marker, Autocomplete } from "@react-google-maps/
     const centroInicial = {
         lat: -34.474,
         lng: -57.848,
-    }; // Ubicación en Uruguay
+    }; 
 
     const [mapa, setMapa] = useState(null);
     const [marcaDePosicion, setMarcaDePosicion] = useState(centroInicial);
@@ -53,14 +53,12 @@ import { GoogleMap, LoadScript, Marker, Autocomplete } from "@react-google-maps/
         googleMapsApiKey='AIzaSyDsFEUklTIKL5EMw_CBS_cosUq9g_zvSm4' 
         libraries={["places"]}>
         <div className="container d-flex flex-column justify-content-center align-items-center vh-100">
-            {/* Buscador de lugares */}
             <div className="mb-3" style={{ width: "800px" }}>
             <Autocomplete onLoad={onLoadAutocompletar} onPlaceChanged={onPlaceChanged}>
                 <input type="text" placeholder="Buscar lugar..." className="form-control" />
             </Autocomplete>
             </div>
 
-            {/* Mapa de Google */}
             <GoogleMap
             mapContainerStyle={containerStyle}
             center={marcaDePosicion}

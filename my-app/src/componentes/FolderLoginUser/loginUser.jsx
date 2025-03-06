@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux'; // Para usar dispatch
+import { useDispatch } from 'react-redux'; 
 import { setUser } from '../../estadoUser';
 import './styleLoginUser.css'
-import { useNavigate } from 'react-router-dom'; // Importamos useNavigate para redirigir
+import { useNavigate } from 'react-router-dom'; 
 
 
 const LoginUser = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('');
 
-    const navigate = useNavigate(); // Creamos el hook navigate
+    const navigate = useNavigate();
 
 
     const dispatch = useDispatch();
@@ -36,7 +36,7 @@ const LoginUser = () => {
                 body: JSON.stringify(datos),
             });
     
-            const data = await sendApi.json(); // Si el servidor responde con JSON
+            const data = await sendApi.json(); 
             if (data.isValid && data.user) {
                 console.log("Login exitoso!!");
                 dispatch(setUser(data.user));
@@ -50,8 +50,7 @@ const LoginUser = () => {
     }
     
     const handleCreateAccount = () => {
-        // Redirige a la página para crear una nueva cuenta
-        navigate('/crear-usuario'); // Cambia '/crear-usuario' por la ruta de tu página de registro
+        navigate('/crear-usuario'); 
     };
 
     return (

@@ -81,7 +81,7 @@ const Species = () => {
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify(consulta), // Aseguramos que se envíe un body válido
+                    body: JSON.stringify(consulta),
                 }
             );
     
@@ -124,14 +124,14 @@ const Species = () => {
         const url = "https://mammal-excited-tarpon.ngrok-free.app/api/species/update?secret=TallerReact2025!";
     
         const requestBody = {
-            userId: user?.id,  // Asegúrate de que este campo sea el ID correcto del usuario
+            userId: user?.id, 
             Species: { 
-                ...editForm  // Asegúrate de que todos los campos del formulario estén presentes
+                ...editForm  
             }
         };
         
     
-        console.log("Enviando datos para actualizar:", requestBody); // Verifica los datos enviados
+        console.log("Enviando datos para actualizar:", requestBody);
     
         try {
             const response = await fetch(url, {
